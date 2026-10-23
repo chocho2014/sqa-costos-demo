@@ -1,0 +1,17 @@
+const fs = require('node:fs');
+const path = require('node:path');
+const dir = path.join(__dirname, '../artifacts');
+fs.mkdirSync(dir, { recursive: true });
+const baseline = require('./baseline.json');
+const text = fs.existsSync(path.join(dir, 'tests.txt')) ? fs.readFileSync(path.join(dir, 'tests.txt'), 'utf8') : '';
+const metric = name => Number(text.match(new RegExp('ℹ ' + name + ' (\\d+)'))?.[1] ?? NaN);
+const coverage = text.match(/all files\s*\|\s*([\d.]+)\s*\|\s*([\d.]+)\s*\|\s*([\d.]+)/);
+const summary = { generatedAt: new Date().toISOString(), baseline, current: { tests: metric('tests'), pass: metric('pass'), fail: metric('fail'), skipped: metric('skipped'), coverage: coverage ? { lines: Number(coverage[1]), branches: Number(coverage[2]), functions: Number(coverage[3]) } : null } };
+fs.writeFileSync(path.join(dir, 'summary.json'), JSON.stringify(summary, null, 2));
+const rows = [['Pruebas aprobadas', baseline.pass, summary.current.pass], ['Fallos', baseline.fail, summary.current.fail], ['Omisiones', baseline.skipped, summary.current.skipped], ...['lines', 'branches', 'functions'].map(k => [k + ' (%)', baseline.coverage[k], summary.current.coverage?.[k] ?? 'Sin evidencia'])];
+const markdown = '# Comparación antes/después\n\n| Métrica | Antes | Actual |\n|---|---:|---:|\n' + rows.map(r => '| ' + r.join(' | ') + ' |').join('\n') + '\n\n' + baseline.scope + '\n\nLa demostración usa datos ficticios y HTTP real de prueba. No acredita protección del repositorio privado original.\n';
+fs.writeFileSync(path.join(dir, 'comparison.md'), markdown);
+if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, markdown);
+const esc = value => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+fs.writeFileSync(path.join(dir, 'report.html'), '<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Evidencia SQA</title><style>body{font:18px/1.6 system-ui;max-width:950px;margin:40px auto;padding:20px;color:#20313d}table{border-collapse:collapse;width:100%}td,th{padding:12px;border-bottom:1px solid #ddd;text-align:left}h1{color:#176a60}</style><h1>Demostración de calidad</h1><p>Mediciones reales con la misma aplicación y una suite ampliada.</p><table><tr><th>Métrica</th><th>Antes</th><th>Actual</th></tr>' + rows.map(r => '<tr>' + r.map(v => '<td>' + esc(v) + '</td>').join('') + '</tr>').join('') + '</table><p>' + esc(baseline.scope) + '</p><p>La protección de main y la revisión humana se acreditan con evidencias remotas independientes.</p></html>');
+console.log(markdown);

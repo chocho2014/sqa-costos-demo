@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-23",
+  "node": "24.19.0",
+  "tests": 10,
+  "pass": 10,
+  "fail": 0,
+  "skipped": 0,
+  "coverage": { "lines": 100, "branches": 87.23, "functions": 95.65 },
+  "scope": "src/calculator.cjs y src/server.cjs cargados por la suite. No incluye interfaz ni archivo de arranque.",
+  "description": "Medición real local antes de ampliar pruebas de límites y conservación de centavos. Ambas mediciones usan la misma aplicación. No corresponde a métricas del ERP completo."
+}

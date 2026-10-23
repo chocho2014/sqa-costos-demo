@@ -1,0 +1,19 @@
+{
+  "name": "sqa-costos-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Demostración académica de calidad y entrega continua con datos ficticios",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "node src/start.cjs",
+    "lint": "oxlint --deny warnings src test quality",
+    "test": "node quality/test.cjs",
+    "build": "node quality/build.cjs",
+    "report": "node quality/report.cjs"
+  },
+  "devDependencies": {
+    "oxlint": "1.81.0"
+  }
+}

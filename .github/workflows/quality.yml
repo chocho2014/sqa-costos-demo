@@ -1,0 +1,65 @@
+name: Calidad demo
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: calidad-demo-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  quality:
+    name: Pruebas y analisis
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+      - name: Comparar metricas
+        if: always()
+        run: npm run report
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: informes-${{ github.sha }}
+          path: artifacts/
+          if-no-files-found: error
+          retention-days: 14
+  delivery:
+    name: Entrega verificada
+    needs: quality
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: demo-entregable-${{ github.sha }}
+          path: dist/
+          if-no-files-found: error
+          retention-days: 14
+  acceptance:
+    name: Aceptacion de calidad
+    if: ${{ always() }}
+    needs: [quality, delivery]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Exigir resultados aprobados
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: node -e "const r=JSON.parse(process.env.RESULTS);for(const k of ['quality','delivery'])if(r[k]?.result!=='success')process.exit(1)"
+
