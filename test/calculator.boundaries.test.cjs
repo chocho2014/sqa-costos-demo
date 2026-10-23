@@ -4,6 +4,12 @@ const { calculate, decimal, money } = require('../src/calculator.cjs');
 const line = (id, amount) => ({ id_producto: id, nombre: 'Ficticio', cantidad_recibida: 1, precio_unitario: amount, moneda: 'GTQ' });
 const cents = value => BigInt(value.replace('.', ''));
 
+test('demostración del control: total de dos productos con flete', () => {
+  const result = calculate([line(1, '10.00'), line(2, '20.00')], { tipo_cambio: '1', gastos: [{ moneda: 'GTQ', monto: '3.00' }] });
+  // Expectativa incorrecta intencional para demostrar el bloqueo del pipeline.
+  assert.equal(result.total_gtq, '32.00');
+});
+
 test('el reparto conserva todos los centavos con cien combinaciones de gastos', () => {
   for (let n = 0; n < 100; n++) {
     const result = calculate([line(1, '0.07'), line(2, '1.13'), line(3, '2.19')], { tipo_cambio: '1', gastos: [{ moneda: 'GTQ', monto: money(BigInt(n)) }] });
