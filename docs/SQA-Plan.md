@@ -32,3 +32,7 @@ La cobertura de funciones React es menor que la del servidor; las pruebas de ren
 
 ## Evidencia y conservación
 Cada ejecución publica JUnit, LCOV, JSON de análisis, HTML de cobertura, comparación antes/después y compilación; retención remota 30 días. La carpeta entregada conserva copias para evitar depender de esa caducidad. La línea base es posterior a adaptar el CRUD y anterior a corregir/ampliar las pruebas; no es una medición del origen completo de Atlas.
+
+## Docker
+
+La entrega incluye Dockerfile, .dockerignore y compose.yaml. Consultar [Docker](docs/Docker.md) desde la raíz o Docker.md dentro de docs. El job adicional Contenedor Docker prueba CRUD y persistencia tras reinicio y es obligatorio para Entrega y Aceptacion. Se contiene la adaptación pública, sin migrar el ERP ni XAMPP.

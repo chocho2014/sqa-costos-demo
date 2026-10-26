@@ -1,0 +1,16 @@
+services:
+  sqa:
+    build: .
+    image: sqa-costos-demo:local
+    ports:
+      - "127.0.0.1:3100:3000"
+    volumes:
+      - sqa-datos:/app/data
+    restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+volumes:
+  sqa-datos:

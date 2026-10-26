@@ -36,3 +36,7 @@ La cobertura incluye src y frontend, salvo arranque y montaje. No representa tod
 - [Revisión y evidencia](docs/Revision-y-Evidencia.md)
 
 Los reportes remotos caducan en 30 días; descargar los artefactos de Actions. La entrega continua publica un paquete verificado; no se afirma despliegue automático de producción.
+
+## Docker
+
+La entrega incluye Dockerfile, .dockerignore y compose.yaml. Consultar [Docker](docs/Docker.md) desde la raíz o Docker.md dentro de docs. El job adicional Contenedor Docker prueba CRUD y persistencia tras reinicio y es obligatorio para Entrega y Aceptacion. Se contiene la adaptación pública, sin migrar el ERP ni XAMPP.

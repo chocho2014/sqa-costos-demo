@@ -45,3 +45,7 @@ Cada comando debe finalizar con código 0. Si una etapa falla, corregir la causa
 
 ## Datos y mantenimiento
 La base local está en data/catalogo.sqlite, ignorada por Git. Detener el proceso antes de copiarla como respaldo. Los registros son ficticios. Las pruebas usan una base temporal y cierran las conexiones. Ctrl+C detiene el servidor. No borrar la base para resolver un error sin respaldarla.
+
+## Docker
+
+La entrega incluye Dockerfile, .dockerignore y compose.yaml. Consultar [Docker](docs/Docker.md) desde la raíz o Docker.md dentro de docs. El job adicional Contenedor Docker prueba CRUD y persistencia tras reinicio y es obligatorio para Entrega y Aceptacion. Se contiene la adaptación pública, sin migrar el ERP ni XAMPP.
