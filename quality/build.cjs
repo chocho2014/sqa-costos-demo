@@ -1,10 +1,8 @@
 const fs = require('node:fs');
 const path = require('node:path');
+const { spawnSync } = require('node:child_process');
 const root = path.join(__dirname, '..');
-const out = path.join(root, 'dist');
-fs.mkdirSync(out, { recursive: true });
-for (const name of ['src', 'public', 'package.json', 'package-lock.json', 'README.md']) {
-  fs.cpSync(path.join(root, name), path.join(out, name), { recursive: true });
-}
-console.log('Entrega preparada en dist sin credenciales ni datos privados.');
-
+const result = spawnSync(process.execPath, [require.resolve('vite/bin/vite.js'), 'build'], { cwd: root, stdio: 'inherit' });
+if (result.status !== 0) process.exit(result.status || 1);
+for (const item of ['src', 'public', 'package.json', 'package-lock.json', 'README.md']) fs.cpSync(path.join(root, item), path.join(root, 'dist', item), { recursive: true });
+console.log('Paquete full stack listo en dist');
