@@ -1,49 +1,38 @@
-# Demostración pública de CI/CD y aseguramiento de calidad
+# Catálogo y costos con aseguramiento de calidad
 
-Aplicación académica de reparto de costos con Node.js. Usa exclusivamente productos e importes ficticios. Se deriva de un cálculo genérico ya existente y se acompaña de una interfaz mínima independiente para demostrar calidad y entrega continua.
+[![Calidad demo](https://github.com/chocho2014/sqa-costos-demo/actions/workflows/quality.yml/badge.svg?branch=atlas%2Fentrega-sqa-completa)](https://github.com/chocho2014/sqa-costos-demo/actions/workflows/quality.yml)
 
-No es el ERP completo. No contiene datos, cuentas, claves, base de datos, documentos, logotipos ni historial Git de ninguna empresa. Se omitieron los campos OEM y la política de precio sugerido del módulo de origen. Publicar esta demostración no protege el repositorio privado original ni certifica su calidad global.
+Adaptación académica de un cálculo existente de Atlas ERP. Incluye catálogo CRUD en React, API Express y persistencia SQLite con datos ficticios. Se conserva la privacidad del ERP original. Node.js 24, npm, React 19, Express 5 y Vite 7. SQLite es una variante justificada para reproducir la entrega sin servidor externo.
 
-## Uso
-
-Node.js 24 o superior:
-
-```sh
+```powershell
 npm ci
+npm run build
 npm start
 ```
 
-Abrir http://127.0.0.1:3000. La aplicación no persiste datos ni requiere una base de datos.
+Abrir http://127.0.0.1:3000. Guardar, editar y eliminar productos; con Q10 + Q20 y Q3 de flete, calcular Q33. No utilizar datos empresariales reales ni exponer esta demo sin autenticación a Internet.
 
-## Comprobaciones
+## Calidad
 
-```sh
-npm run lint
+```powershell
 npm test
-npm run build
+npm run analyze
+npm run lint
 npm run report
 ```
 
-Oxlint exige cero advertencias. Las pruebas unitarias verifican importes, distribución de centavos, redondeos y límites. Las integraciones realizan solicitudes HTTP contra el servidor real con datos ficticios. No son pruebas de integración de base de datos ni pruebas E2E de navegador.
+Build → Test y Analyze → Report → Entrega verificada → Aceptacion de calidad. Test y Analyze son paralelos a Build. La entrega requiere los cuatro stages exitosos. Cobertura global mínima 60 % en las cuatro métricas; cero pruebas fallidas u omitidas y cero hallazgos configurados; duplicación máxima 10 %. El pipeline genera JUnit, LCOV, análisis JSON, dashboard HTML y compilación.
 
-La cobertura nativa de Node exige 85 % de líneas, 75 % de ramas y 90 % de funciones en calculator.cjs y server.cjs cargados por la suite. No se mide el JavaScript de interfaz ni start.cjs. La línea base de diez pruebas se midió antes de ampliar los escenarios sobre la misma aplicación. Las métricas pertenecen a esta demostración.
+La cobertura incluye src y frontend, salvo arranque y montaje. No representa todo Atlas ni prueba ausencia de defectos. Oxlint, ESLint y jscpd forman la alternativa documentada a SonarCloud. Se requiere además revisión humana independiente para integrar a main.
 
-## Pipeline y entrega
+## Documentación
 
-Push y pull request ejecutan análisis, pruebas, cobertura y preparación del paquete. El job de entrega publica dist solo si calidad pasa. Aceptacion de calidad usa always() y falla si falta un resultado correcto. Los informes JUnit, LCOV, JSON y HTML se conservan catorce días. Se entrega un paquete listo para instalar, sin despliegue automático.
+- [Plan SQA](docs/SQA-Plan.md)
+- [Matriz de pruebas](docs/Matriz-Pruebas.md)
+- [Línea base](docs/Linea-Base-Calidad.md)
+- [Reporte de mejora y deuda](docs/Reporte-Mejora.md)
+- [Manual técnico](docs/Manual-Tecnico.md)
+- [Manual de usuario](docs/Manual-Usuario.md)
+- [Revisión y evidencia](docs/Revision-y-Evidencia.md)
 
-## Plan de calidad y deuda
-
-- Cada cambio requiere PR con descripción y evidencia, comprobaciones aprobadas y revisión de otra persona.
-- Revisar conservación de centavos, validaciones, errores HTTP y ausencia de datos privados.
-- No reducir umbrales ni omitir pruebas para aprobar una entrega.
-- Deuda abierta: cobertura de interfaz y E2E de navegador; actualización y fijación de acciones por SHA; pruebas del paquete en un entorno de despliegue.
-- Las actualizaciones se prueban por PR. No existe autofusión.
-
-## Protección de main y demostración negativa
-
-Tras publicar y obtener una ejecución verde, configurar protección de main con PR obligatorio, una aprobación, descarte de aprobaciones antiguas, conversación resuelta y check Aceptacion de calidad. No permitir force push, eliminación ni excepciones de administrador.
-
-En una rama de prueba separada, introducir un test fallido deliberado, abrir su PR y mostrar el rechazo del pipeline y el bloqueo de fusión. Corregir mediante otro commit y conservar ambos resultados como evidencia. La revisión manual requiere otra persona con acceso autorizado. El autor no puede autoaprobarse.
-
-Estado inicial de esta copia: validación local. La publicación, ejecución remota, reglas y revisión humana se acreditarán con sus enlaces al realizarse.
+Los reportes remotos caducan en 30 días; descargar los artefactos de Actions. La entrega continua publica un paquete verificado; no se afirma despliegue automático de producción.

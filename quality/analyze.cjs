@@ -16,7 +16,7 @@ async function main() {
     errors: results.reduce((n, r) => n + r.errorCount, 0) + oxlint.diagnostics.filter(d => d.severity === 'error').length,
     codeSmells: results.reduce((n, r) => n + r.warningCount, 0) + oxlint.diagnostics.filter(d => d.severity === 'warning').length,
     duplicationPercent: Number(duplication.statistics.total.percentage),
-    toolErrors: Boolean(ox.error || dup.error),
+    toolErrors: Boolean(ox.error || dup.error) || !Number.isFinite(Number(duplication.statistics.total.percentage)),
     definitions: 'Errors son hallazgos estáticos, no bugs confirmados. Code smells son advertencias de reglas de mantenibilidad configuradas. Duplicación usa jscpd con minLines 8 y minTokens 60.'
   };
   fs.writeFileSync(path.join(output, 'analysis.json'), JSON.stringify(summary, null, 2));

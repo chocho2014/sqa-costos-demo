@@ -9,14 +9,7 @@ function decimal(value, scale=2, positive=false){
 }
 const round=(a,b)=>(a+b/2n)/b;
 function money(n){if(n<0n||n>99999999999999n)fail('El costo excede el rango permitido');return `${n/100n}.${String(n%100n).padStart(2,'0')}`;}
-function calculate(lines, data){
-  const fx=decimal(data.tipo_cambio,6,true);
-  const convert=(amount,currency)=>{
-    if(!['USD','GTQ'].includes(currency))fail('Solo se admite compra en USD o GTQ');
-    return currency==='USD'?round(amount*fx,1000000n):amount;
-  };
-  const expenses=data.gastos.map(g=>({...g,total_gtq:money(convert(decimal(g.monto),g.moneda))}));
-  const expense=expenses.reduce((sum,g)=>sum+decimal(g.total_gtq),0n);
+function receivedProducts(lines, convert){
   const groups=new Map();
   for(const line of lines){
     const qty=Number(line.cantidad_recibida);if(!Number.isSafeInteger(qty)||qty<0)fail('Cantidad recibida no válida');
@@ -26,7 +19,17 @@ function calculate(lines, data){
     const old=groups.get(line.id_producto)||{id_producto:line.id_producto,codigo_interno:line.codigo_interno,nombre:line.nombre,cantidad:0,base:0n};
     old.cantidad+=qty;old.base+=base;groups.set(line.id_producto,old);
   }
-  const products=[...groups.values()].sort((a,b)=>a.id_producto-b.id_producto);
+  return [...groups.values()].sort((a,b)=>a.id_producto-b.id_producto);
+}
+function calculate(lines, data){
+  const fx=decimal(data.tipo_cambio,6,true);
+  const convert=(amount,currency)=>{
+    if(!['USD','GTQ'].includes(currency))fail('Solo se admite compra en USD o GTQ');
+    return currency==='USD'?round(amount*fx,1000000n):amount;
+  };
+  const expenses=data.gastos.map(g=>({...g,total_gtq:money(convert(decimal(g.monto),g.moneda))}));
+  const expense=expenses.reduce((sum,g)=>sum+decimal(g.total_gtq),0n);
+  const products=receivedProducts(lines,convert);
   const base=products.reduce((sum,p)=>sum+p.base,0n);
   if(!products.length || base===0n)fail('Se requiere mercancía recibida con valor de compra mayor que cero');
   const discountInput=data.descuento_proveedor;

@@ -35,7 +35,7 @@ function createServer(options = {}) {
   const web = path.join(__dirname, '../dist/web');
   app.use(express.static(web));
   // Conserva las rutas de la interfaz inicial para compatibilidad y regresión.
-  app.use(express.static(path.join(__dirname, '../public'), { index: !fs.existsSync(path.join(web, 'index.html')) }));
+  app.use(express.static(path.join(__dirname, '../public'), { index: fs.existsSync(path.join(web, 'index.html')) ? false : 'index.html' }));
   app.use((_req, res) => res.status(404).json({ error: 'Ruta no encontrada' }));
   app.use((failure, _req, res, _next) => {
     const status = failure.statusCode || failure.status || 500;
