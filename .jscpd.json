@@ -1,0 +1,1 @@
+{ "threshold": 10, "minLines": 8, "minTokens": 60, "reporters": ["json", "html"], "output": "artifacts/duplication", "path": ["src", "frontend"], "ignore": ["**/*.css"] }

@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-26",
+  "stage": "Adaptacion CRUD antes de ampliar pruebas y corregir servicio estatico",
+  "tests": 16,
+  "pass": 14,
+  "fail": 2,
+  "skipped": 0,
+  "coverage": {
+    "lines": 67.41,
+    "branches": 97.02,
+    "functions": 52.38,
+    "statements": 67.41
+  },
+  "analysis": {
+    "errors": 0,
+    "codeSmells": 1,
+    "duplicationPercent": 0,
+    "toolErrors": false,
+    "definitions": "Errors son hallazgos estáticos, no bugs confirmados. Code smells son advertencias de reglas de mantenibilidad configuradas. Duplicación usa jscpd con minLines 8 y minTokens 60."
+  },
+  "scope": "Todos los archivos de negocio src y frontend incluidos aun sin cargar, excepto arranque src/start.cjs y montaje frontend/main.mjs. c8 --all.",
+  "codeSha256": {
+    "src/calculator.cjs": "8eb1b6a30b94932c97646ec3ef229da81aafa8d9251f6d9d4843831cba9790da",
+    "src/product-store.cjs": "b83c2df46582e17cb680ac0d763b9d0b32ded9858df26568a926b23e7af96a65",
+    "src/server.cjs": "842aece8498aa7883e4b1eb7b1f0a7e0aefb464a136aca7ab14a2bec7d725f51",
+    "src/start.cjs": "803a6bbaae198c6aa591278615dd7f45d2a323a2bd7da9773eefc0f543675396",
+    "frontend/App.mjs": "8108f8b700dd049a2698fecb5c93b237af7c6d4f7a16630b213d07f5041b320d",
+    "frontend/main.mjs": "e3698db0781af768f6f8b9f083dd6496a3992620d1e7d0a5fccff58e4dd4cadb"
+  }
+}

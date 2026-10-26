@@ -3,4 +3,6 @@ artifacts/
 dist/
 .env
 *.log
+data/
+coverage/
 
