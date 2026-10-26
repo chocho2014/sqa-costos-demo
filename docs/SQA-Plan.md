@@ -35,4 +35,4 @@ Cada ejecución publica JUnit, LCOV, JSON de análisis, HTML de cobertura, compa
 
 ## Docker
 
-La entrega incluye Dockerfile, .dockerignore y compose.yaml. Consultar [Docker](docs/Docker.md) desde la raíz o Docker.md dentro de docs. El job adicional Contenedor Docker prueba CRUD y persistencia tras reinicio y es obligatorio para Entrega y Aceptacion. Se contiene la adaptación pública, sin migrar el ERP ni XAMPP.
+La entrega incluye Dockerfile, .dockerignore y compose.yaml. Consultar [Docker](Docker.md). El job adicional Contenedor Docker prueba CRUD y persistencia tras reinicio y es obligatorio para Entrega y Aceptacion. Se contiene la adaptación pública, sin migrar el ERP ni XAMPP.
