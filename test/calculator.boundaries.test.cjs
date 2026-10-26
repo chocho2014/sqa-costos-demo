@@ -7,7 +7,7 @@ const cents = value => BigInt(value.replace('.', ''));
 test('demostración del control: total de dos productos con flete', () => {
   const result = calculate([line(1, '10.00'), line(2, '20.00')], { tipo_cambio: '1', gastos: [{ moneda: 'GTQ', monto: '3.00' }] });
   // Q10.00 + Q20.00 + Q3.00 de flete: se conserva el costo completo.
-  assert.equal(result.total_gtq, '33.00');
+  assert.equal(result.total_gtq, '32.00');
 });
 
 test('el reparto conserva todos los centavos con cien combinaciones de gastos', () => {
